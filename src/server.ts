@@ -1,5 +1,5 @@
 import app from "./app";
-import connectToDatabase from "./config/dbCOnfig";
+import connectToDatabase from "./config/dbConfig";
 
 connectToDatabase();
 
