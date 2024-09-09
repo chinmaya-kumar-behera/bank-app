@@ -107,7 +107,7 @@ async function getTransactions(req: Request, res: Response): Promise<void> {
 
         const transactions = await Transaction.find(filter);
 
-        res.status(200).json(transactions);
+        res.status(200).json({message:"Transactions fetched successfully ! ", transactions});
     } catch (error) {
         res.status(500).json({ error: error });
     }

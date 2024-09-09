@@ -13,7 +13,7 @@ async function getUsers(req: Request, res: Response): Promise<void> {
         if (email) filter.email = new RegExp(email as string, 'i');
         if (phoneNumber) filter.phoneNumber = phoneNumber;
 
-        const sortOptions: any = {}; 
+        const sortOptions: any = {};
         if (sortBy) sortOptions[sortBy as string] = sortOrder === 'desc' ? -1 : 1;
 
         const users = await User.find(filter)

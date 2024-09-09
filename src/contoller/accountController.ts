@@ -4,10 +4,10 @@ import Account from "../models/account.model";
 
 async function createAccount(req: Request, res: Response): Promise<void> {
     try {
-        const { userData, accountData } = req.body;
+        const { userData } = req.body;
 
-        if (!userData || !accountData) {
-            res.status(400).json({ message: 'User data and account data are required' });
+        if (!userData) {
+            res.status(400).json({ message: 'User data are required' });
             return;
         }
 
@@ -28,7 +28,6 @@ async function createAccount(req: Request, res: Response): Promise<void> {
         await user.save();
 
         const account = new Account({
-            ...accountData,
             userId: user._id,
         });
 
