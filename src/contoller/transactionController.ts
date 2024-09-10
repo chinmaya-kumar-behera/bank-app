@@ -114,7 +114,7 @@ async function getTransactions(req: Request, res: Response): Promise<void> {
 }
 
 async function deleteTransaction(req: Request, res: Response): Promise<void> {
-    console.log("deleteTanasction controller called !")
+    console.log("deleteTransaction controller called !")
     try {
         const { transactionId } = req.params;
 

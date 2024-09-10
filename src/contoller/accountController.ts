@@ -3,9 +3,9 @@ import User from "../models/user.model";
 import Account from "../models/account.model";
 
 async function createAccount(req: Request, res: Response): Promise<void> {
+
     try {
         const { userData } = req.body;
-
         if (!userData) {
             res.status(400).json({ message: 'User data are required' });
             return;
@@ -13,17 +13,17 @@ async function createAccount(req: Request, res: Response): Promise<void> {
 
         const existingUserByEmail = await User.findOne({ email: userData.email, isDeleted:false });
         const existingUserByPhone = await User.findOne({ phoneNumber: userData.phoneNumber, isDeleted : false});
-
+        
         if (existingUserByEmail) {
             res.status(400).json({ message: 'Email already in use' });
             return;
         }
-
+        
         if (existingUserByPhone) {
             res.status(400).json({ message: 'Phone number already in use' });
             return;
         }
-
+        
         const user = new User(userData);
         await user.save();
 
@@ -39,6 +39,7 @@ async function createAccount(req: Request, res: Response): Promise<void> {
             account
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: error });
     }
 }
