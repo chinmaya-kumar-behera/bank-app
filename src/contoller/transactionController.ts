@@ -33,7 +33,7 @@ async function makeTansfer(req: Request, res: Response): Promise<void> {
         if (!receiverAccount) {
             res.status(404).json({ message: 'Receiver account not found' });
             return;
-        } 
+        }
 
         if (!senderAccount.isKycVerified) {
             res.status(400).json({ message: 'Your account is not KYC verified' });
@@ -90,6 +90,7 @@ async function makeTansfer(req: Request, res: Response): Promise<void> {
             res.status(500).json({ error: error });
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: error });
     }
 }
@@ -107,18 +108,17 @@ async function getTransactions(req: Request, res: Response): Promise<void> {
 
         const transactions = await Transaction.find(filter);
 
-        res.status(200).json({message:"Transactions fetched successfully ! ", transactions});
+        res.status(200).json({message:"Transactions fetched successfully !", transactions});
     } catch (error) {
         res.status(500).json({ error: error });
     }
 }
 
 async function deleteTransaction(req: Request, res: Response): Promise<void> {
-    console.log("deleteTransaction controller called !")
     try {
         const { transactionId } = req.params;
 
-        const transaction = await Transaction.findById(transactionId);
+        const transaction = await Transaction.findOne({_id:transactionId, isDeleted:false}); 
         if (!transaction) {
             res.status(404).json({ message: 'Transaction not found' });
             return;

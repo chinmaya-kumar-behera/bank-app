@@ -78,7 +78,7 @@ async function updateAccount(req: Request, res: Response): Promise<void> {
 }
 
 async function deleteAccount(req: Request, res: Response): Promise<void> {
-    console.log("delete account controller called !")
+     
     try {
         const { accountId } = req.params;
 
