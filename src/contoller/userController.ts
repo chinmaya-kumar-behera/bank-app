@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
+import mongoose from "mongoose";
 
 async function getUsers(req: Request, res: Response): Promise<void> {
     try {
@@ -43,7 +44,7 @@ async function updateUser(req: Request, res: Response): Promise<void> {
         const { userId } = req.params;
         const updateData = req.body;
 
-        if (!userId) {
+        if (!userId || !mongoose.isValidObjectId(userId)) {
             res.status(400).json({ message: 'User ID is required' });
             return;
         }

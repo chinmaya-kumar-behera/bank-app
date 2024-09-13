@@ -11,7 +11,7 @@ describe("Account routers",function(){
     let accountId : any;
 
     after(async function() {
-        // await Account.deleteMany();
+        await Account.deleteMany();
     })
 
     describe('POST /api/account/', async function(){

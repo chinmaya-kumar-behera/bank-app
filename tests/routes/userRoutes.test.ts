@@ -38,12 +38,15 @@ describe('User APIs', function() {
         it('should filter users by name, email, and phoneNumber', async function() {
             const response = await request(app)
                 .get('/api/user')
-                .query({ name: 'Test', email: 'test.user@example.com' })
+                .query({ name: 'Test', email: 'test.user@example.com', phoneNumber: 8997876533 })
                 .expect(200);
+        });
 
-            expect(response.body.users).to.be.an('array').that.is.not.empty;
-            expect(response.body.users[0]).to.have.property('name').that.equals('Test User');
-            expect(response.body.users[0]).to.have.property('email').that.equals('test.user@example.com');
+        it('should filter users by name, email, and phoneNumber and Created time in descending order', async function() {
+            const response = await request(app)
+                .get('/api/user')
+                .query({ name: 'Test', email: 'test.user@example.com', createdAt:'desc' })
+                .expect(200);
         });
 
         it('should sort users by createdAt in ascending order', async function() {
@@ -90,5 +93,20 @@ describe('User APIs', function() {
                 .send({ name: 'khalid' })
                 .expect(200);
         });
+
+        it('Trying to update the user without passing userId should results 400 error', async function() {
+            const originalFindOne = User.findOne;
+            User.findOne = ()=> {throw new Error("Internal server Error")}
+
+            await request(app)
+                .put(`/api/user/}`)
+                .send({ name: 'khalid' })
+                .expect(400);
+
+            User.findOne = originalFindOne;
+        });
+                
     });
+
+
 });

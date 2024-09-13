@@ -4,8 +4,9 @@ const URL: string = 'mongodb+srv://chinmayakumarbehera:mongodb-passowrd@cluster0
 
 const connectToDatabase = async (): Promise<void> => {
     try {
-        await mongoose.connect(URL);
-        console.log('Successfully connected to MongoDB');
+        await mongoose.connect(URL).then(()=>{
+            console.log('Successfully connected to MongoDB');
+        })
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
         process.exit(1);

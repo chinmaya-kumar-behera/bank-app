@@ -4,6 +4,8 @@ import Account from "../models/account.model";
 import Transaction from "../models/transaction.model";
 
 async function makeTansfer(req: Request, res: Response): Promise<void> {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
         const { senderAccountNo, receiverAccountNo, transactionAmount, transferType, paymentMode } = req.body;
 
@@ -50,10 +52,9 @@ async function makeTansfer(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        const session = await mongoose.startSession();
-        session.startTransaction();
 
-        try {
+
+        
             if (transferType === 'debit') {
                 senderAccount.balance -= transactionAmount;
                 receiverAccount.balance += transactionAmount;
@@ -84,12 +85,10 @@ async function makeTansfer(req: Request, res: Response): Promise<void> {
                 transaction
             });
 
-        } catch (error) {
-            await session.abortTransaction();
-            session.endSession();
-            res.status(500).json({ error: error });
-        }
+        
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         console.log(error);
         res.status(500).json({ error: error });
     }
